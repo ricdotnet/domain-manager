@@ -1,8 +1,8 @@
-import { Controller, controller, get, post, response } from "@envuso/core/Routing";
+import { Controller, controller, dto, get, post, response } from "@envuso/core/Routing";
 import axios from "axios";
 import Environment from "@envuso/core/AppContainer/Config/Environment";
+import { IPV4Dto } from "../../DataTransferObjects/IPV4Dto";
 
-//@middleware()
 @controller('/')
 export class DomainController extends Controller {
 
@@ -22,11 +22,11 @@ export class DomainController extends Controller {
     return response().json(res.data);
   }
 
-  @post('/addipv4record')
-  public async addARecord() {
+  @post('/add/arecord')
+  public async addARecord(@dto() body: IPV4Dto) {
     let res;
     try {
-      res = await axios.post(`${this.apiUrl}/dns/manage/add-ipv4-record.json?${this.apiAuth}&domain-name=domain.com&value=123.12.12.123&host=hello`);
+      res = await axios.post(`${this.apiUrl}/dns/manage/add-ipv4-record.json?${this.apiAuth}&domain-name=${body.domainName}&value=${body.ipAddress}&host=${body.subDomain}`);
     } catch (e) {
       console.log(e.message);
       console.log('something went wrong');
@@ -35,11 +35,11 @@ export class DomainController extends Controller {
     return response().json(res.data);
   }
 
-  @post('/deleteipv4record')
-  public async removeARecord() {
+  @post('/del/arecord')
+  public async removeARecord(@dto() body: IPV4Dto) {
     let res;
     try {
-      res = await axios.post(`${this.apiUrl}/dns/manage/delete-ipv4-record.json?${this.apiAuth}&domain-name=domain.com&host=hello&value=123.12.12.123`);
+      res = await axios.post(`${this.apiUrl}/dns/manage/delete-ipv4-record.json?${this.apiAuth}&domain-name=${body.domainName}&host=${body.subDomain}&value=${body.ipAddress}`);
     } catch (e) {
       console.log(e.message);
       console.log('something went wrong')
