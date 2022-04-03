@@ -4,18 +4,29 @@
     <div class="tab">AAAA Records</div>
   </div>
 
-  <div v-for="(record, index) of dnsData" :key="index">
-    {{ record }}
+  <div v-for="(domain, index) of state.domains" :key="index">
+    {{ domain['entity.description'] }}
   </div>
+
+  <!--  <div v-for="(record, index) of dnsData" :key="index">-->
+  <!--    {{ record }}-->
+  <!--  </div>-->
 </template>
 
 <script setup lang="ts">
+  import { computed, defineExpose, reactive } from 'vue';
 
-  defineProps<{
-    dnsData: any;
-    data?: any;
+  const props = defineProps<{
+    // dnsData: any;
+    // data?: any;
+    domains: any;
   }>();
 
+  const state = reactive({
+    domains: computed(() => props.domains),
+  });
+
+  defineExpose({ state });
 </script>
 
 <style scoped>

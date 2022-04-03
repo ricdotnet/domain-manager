@@ -3,7 +3,7 @@ import axios from "axios";
 import Environment from "@envuso/core/AppContainer/Config/Environment";
 import { IPV4Dto } from "../../DataTransferObjects/IPV4Dto";
 
-@controller('/')
+@controller('/sss')
 export class DomainController extends Controller {
 
   private apiUrl  = Environment.get('CP_API_URL');
