@@ -42,7 +42,7 @@ export class DomainController extends Controller {
       res = await axios.post(`${this.apiUrl}/dns/manage/delete-ipv4-record.json?${this.apiAuth}&domain-name=${body.domainName}&host=${body.subDomain}&value=${body.ipAddress}`);
     } catch (e) {
       console.error(e.message);
-      console.error('something went wrong')
+      console.error('something went wrong');
       return response().json({ error: 'something went wrong' });
     }
     return response().json(res.data);
@@ -55,7 +55,7 @@ export class DomainController extends Controller {
       res = await axios.get(`${this.apiUrl}/dns/manage/search-records.json?${this.apiAuth}&domain-name=ricr.net&type=A&no-of-records=10&page-no=1`);
     } catch (e) {
       console.error(e.message);
-      console.error('something went wrong')
+      console.error('something went wrong');
       return response().json({ error: 'something went wrong' });
     }
     return response().json(res.data);
@@ -78,10 +78,10 @@ export class DomainController extends Controller {
 
     let res;
     try {
-      res = await axios.get(`${this.apiUrl}/domains/available.json?${this.apiAuth}&domain-name=${name}&tlds=${tld}`)
+      res = await axios.get(`${this.apiUrl}/domains/available.json?${this.apiAuth}&domain-name=${name}&tlds=${tld}`);
     } catch (e) {
       console.error(e.message);
-      console.error('something went wrong')
+      console.error('something went wrong');
       return response().json({ error: 'something went wrong' });
     }
 

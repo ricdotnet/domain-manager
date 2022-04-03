@@ -1,17 +1,18 @@
 module.exports = {
-  purge: [
+  mode    : 'jit',
+  purge   : [
     './src/Resources/Views/**/*.edge',
     './src/Resources/Ts/**/*.ts',
     './src/Resources/Ts/**/*.vue',
   ],
   darkMode: false, // or 'media' or 'class'
-  theme: {
+  theme   : {
     extend: {},
   },
   variants: {
     extend: {},
   },
-  plugins: [
-      require('@tailwindcss/forms')
+  plugins : [
+    require('@tailwindcss/forms')
   ],
 }
