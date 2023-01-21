@@ -1,6 +1,8 @@
 <script setup>
-    import {Head, Link} from '@inertiajs/vue3';
+    import {Head, Link, router} from '@inertiajs/vue3';
     import PrimaryButton from '../Components/PrimaryButton.vue';
+    import Dropdown from '../Components/Dropdown.vue';
+    import DropdownLink from '../Components/DropdownLink.vue';
 
     defineProps({
         canLogin: Boolean,

@@ -2,43 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use Database\Factories\UserFactory;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use Inertia\Response as Response;
+use Mockery\Exception;
 
-class DashboardController extends BaseController
+class DashboardController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    function index(): Response
+    function index(Request $request): Response
     {
-        $body = $this->getCustomerDetails();
-        $domains = $this->getCustomerDomains($body['customerid']);
+        $email = json_decode($request->user())->email;
+        $body = $this->getCustomerDetails($email);
+        if (array_key_exists('customerid', $body)) {
+            $domains = $this->getCustomerDomains($body['customerid']);
 
-        $domainsResponse = array();
-        foreach ($domains as $domain) {
-            if ($domain != $domains['recsonpage'] || $domain != $domains['recsindb']) {
-                $tmp = array('name' => $domain['entity.description'],
-                    'renew' => $domain['orders.endtime']);
-                $domainsResponse[] = $tmp;
+            $domainsResponse = array();
+            foreach ($domains as $domain) {
+                if ($domain != $domains['recsonpage'] || $domain != $domains['recsindb']) {
+                    $tmp = array('name' => $domain['entity.description'],
+                        'renew' => $domain['orders.endtime']);
+                    $domainsResponse[] = $tmp;
+                }
             }
         }
 
         return Inertia::render('Dashboard', [
-            'domains' => $domainsResponse
+            'domains' => $domainsResponse ?? null
         ]);
     }
 
-    protected function getCustomerDetails(): array
+    protected function getCustomerDetails(string $email): array
     {
         return Http::get($_ENV['DOMAIN_CP_API'] . '/customers/details.json', [
             'auth-userid' => $_ENV['DOMAIN_CP_ID'],
             'api-key' => $_ENV['DOMAIN_CP_KEY'],
-            'username' => 'client@email'
+            'username' => $email
         ])->json();
     }
 
