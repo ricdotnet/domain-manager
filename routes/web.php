@@ -18,10 +18,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register')
-    ]);
+    return Inertia::render('Welcome');
 });
 
 Route::middleware([
@@ -31,4 +28,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/domain/{domain}', [DomainController::class, 'index'])->name('domain');
+    Route::get('/domain/{domain}/a', [DomainController::class, 'getARecords'])->name('domain.a-records');
+
+    Route::post('/domain/{domain}/a', [DomainController::class, 'postARecord']);
 });

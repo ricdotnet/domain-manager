@@ -27,7 +27,12 @@ class DashboardController extends Controller
             foreach ($domains as $domain) {
                 if ($domain != $domains['recsonpage'] || $domain != $domains['recsindb']) {
                     $tmp = array('name' => $domain['entity.description'],
-                        'renew' => $domain['orders.endtime']);
+                        'registeredOn' => $domain['orders.creationtime'],
+                        'expiresOn' => $domain['orders.endtime'],
+                        'status' => $domain['entity.currentstatus'],
+                        'privacyProtection' =>
+                            !array_key_exists('orders.privacyprotection', $domain)
+                                ? false : $domain['orders.privacyprotection']);
                     $domainsResponse[] = $tmp;
                 }
             }
